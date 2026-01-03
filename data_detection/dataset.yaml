@@ -1,0 +1,13 @@
+path: /home/semyon/Загрузки/dog_breed_project/data_detection
+train: train
+val: valid
+test: test
+
+# Породы собак
+names:
+  0: Chihuahua
+  1: Japanese_spaniel
+  2: Maltese_dog
+  3: Pekinese
+
+nc: 4
