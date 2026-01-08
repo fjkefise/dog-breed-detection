@@ -1,0 +1,889 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dog Breed Analyzer</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            color: #333;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            background-color: white;
+            border-radius: 24px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            min-height: 90vh;
+        }
+
+        header {
+            background: linear-gradient(90deg, #4b6cb7 0%, #182848 100%);
+            color: white;
+            padding: 30px 40px;
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: 2.8rem;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        header h1 i {
+            color: #FFD166;
+        }
+
+        header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            max-width: 700px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        .main-content {
+            display: flex;
+            flex: 1;
+            padding: 30px;
+            gap: 30px;
+        }
+
+        @media (max-width: 900px) {
+            .main-content {
+                flex-direction: column;
+            }
+        }
+
+        .upload-section {
+            flex: 1;
+            background: #f8f9ff;
+            border-radius: 18px;
+            padding: 30px;
+            display: flex;
+            flex-direction: column;
+            border: 2px dashed #4b6cb7;
+            transition: all 0.3s ease;
+        }
+
+        .upload-section:hover {
+            border-color: #182848;
+            background: #f0f3ff;
+        }
+
+        .upload-area {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 40px 20px;
+            cursor: pointer;
+            border-radius: 12px;
+            background: white;
+            margin-bottom: 25px;
+            transition: transform 0.3s ease;
+        }
+
+        .upload-area:hover {
+            transform: translateY(-5px);
+        }
+
+        .upload-area i {
+            font-size: 5rem;
+            color: #4b6cb7;
+            margin-bottom: 20px;
+        }
+
+        .upload-area h3 {
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+            color: #182848;
+        }
+
+        .upload-area p {
+            color: #666;
+            margin-bottom: 25px;
+            font-size: 1rem;
+        }
+
+        .btn {
+            padding: 14px 28px;
+            background: linear-gradient(90deg, #4b6cb7 0%, #182848 100%);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            transition: all 0.3s ease;
+            box-shadow: 0 6px 20px rgba(75, 108, 183, 0.3);
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(75, 108, 183, 0.4);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .btn-secondary {
+            background: linear-gradient(90deg, #6c757d 0%, #495057 100%);
+            box-shadow: 0 6px 20px rgba(108, 117, 125, 0.3);
+        }
+
+        .btn-secondary:hover {
+            box-shadow: 0 10px 25px rgba(108, 117, 125, 0.4);
+        }
+
+        .mode-selector {
+            margin-top: 25px;
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+        }
+
+        .mode-selector h4 {
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+            color: #182848;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .mode-buttons {
+            display: flex;
+            gap: 15px;
+        }
+
+        .mode-btn {
+            flex: 1;
+            padding: 15px;
+            background: #f1f3f9;
+            border: 2px solid #e0e4f0;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 600;
+            color: #555;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .mode-btn:hover {
+            background: #e6eaf5;
+        }
+
+        .mode-btn.active {
+            background: linear-gradient(90deg, #4b6cb7 0%, #182848 100%);
+            color: white;
+            border-color: #4b6cb7;
+            box-shadow: 0 5px 15px rgba(75, 108, 183, 0.3);
+        }
+
+        .confidence-slider {
+            margin-top: 25px;
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+        }
+
+        .slider-container {
+            margin-top: 10px;
+        }
+
+        .slider-value {
+            font-weight: 600;
+            color: #182848;
+            font-size: 1.2rem;
+            margin-left: 10px;
+        }
+
+        input[type="range"] {
+            width: 100%;
+            height: 10px;
+            border-radius: 5px;
+            background: #e0e4f0;
+            outline: none;
+            -webkit-appearance: none;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: #4b6cb7;
+            cursor: pointer;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .image-preview {
+            margin-top: 25px;
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+        }
+
+        .image-preview h4 {
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+            color: #182848;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        #previewImage {
+            max-width: 100%;
+            max-height: 300px;
+            border-radius: 10px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+            display: none;
+        }
+
+        .results-section {
+            flex: 1;
+            background: #f8f9ff;
+            border-radius: 18px;
+            padding: 30px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .results-section h2 {
+            font-size: 2rem;
+            color: #182848;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .results-container {
+            flex: 1;
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            overflow-y: auto;
+            box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .results-placeholder {
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            color: #999;
+        }
+
+        .results-placeholder i {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            color: #d0d5e6;
+        }
+
+        .results-placeholder h3 {
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+            color: #a0a8c0;
+        }
+
+        .processing {
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 40px 20px;
+        }
+
+        .spinner {
+            width: 70px;
+            height: 70px;
+            border: 8px solid #e0e4f0;
+            border-top: 8px solid #4b6cb7;
+            border-radius: 50%;
+            animation: spin 1.5s linear infinite;
+            margin-bottom: 25px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .results-content {
+            display: none;
+        }
+
+        .classification-results, .detection-results {
+            display: none;
+        }
+
+        .breed-result {
+            background: linear-gradient(90deg, #f8f9ff 0%, #eef1fb 100%);
+            padding: 25px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            border-left: 6px solid #4b6cb7;
+        }
+
+        .breed-name {
+            font-size: 1.8rem;
+            color: #182848;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .confidence-bar-container {
+            height: 20px;
+            background: #e0e4f0;
+            border-radius: 10px;
+            margin: 15px 0;
+            overflow: hidden;
+        }
+
+        .confidence-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #4b6cb7 0%, #182848 100%);
+            border-radius: 10px;
+            width: 0%;
+            transition: width 1.5s ease-out;
+        }
+
+        .confidence-value {
+            font-weight: 600;
+            color: #182848;
+            font-size: 1.3rem;
+            text-align: right;
+        }
+
+        .detection-canvas-container {
+            position: relative;
+            margin-bottom: 25px;
+        }
+
+        #detectionCanvas {
+            max-width: 100%;
+            border-radius: 10px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .detection-list {
+            margin-top: 20px;
+        }
+
+        .detection-item {
+            background: #f8f9ff;
+            padding: 18px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            border-left: 4px solid #4b6cb7;
+        }
+
+        .detection-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .detection-breed {
+            font-weight: 600;
+            color: #182848;
+            font-size: 1.2rem;
+        }
+
+        .detection-confidence {
+            background: #4b6cb7;
+            color: white;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-weight: 600;
+        }
+
+        .detection-bbox {
+            color: #666;
+            font-size: 0.95rem;
+        }
+
+        footer {
+            padding: 25px 40px;
+            background: #f8f9ff;
+            text-align: center;
+            color: #666;
+            border-top: 1px solid #e0e4f0;
+        }
+
+        .api-info {
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 15px;
+            font-family: monospace;
+            font-size: 0.9rem;
+            color: #4b6cb7;
+            word-break: break-all;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1><i class="fas fa-paw"></i> Dog Breed Analyzer</h1>
+            <p>Загрузите изображение собаки для определения породы (Chihuahua, Japanese Spaniel, Maltese Dog, Pekinese) или обнаружения всех собак на фото</p>
+        </header>
+
+        <div class="main-content">
+            <!-- Левая панель: загрузка и настройки -->
+            <div class="upload-section">
+                <div class="upload-area" id="uploadArea">
+                    <i class="fas fa-cloud-upload-alt"></i>
+                    <h3>Загрузите изображение</h3>
+                    <p>Перетащите файл сюда или нажмите для выбора</p>
+                    <p class="btn" id="selectFileBtn"><i class="fas fa-folder-open"></i> Выбрать файл</p>
+                    <input type="file" id="fileInput" accept="image/*" style="display: none;">
+                </div>
+
+                <div class="mode-selector">
+                    <h4><i class="fas fa-tasks"></i> Режим анализа</h4>
+                    <div class="mode-buttons">
+                        <div class="mode-btn active" data-mode="classify">Классификация</div>
+                        <div class="mode-btn" data-mode="detect">Детекция</div>
+                    </div>
+                </div>
+
+                <div class="confidence-slider" id="confidenceSlider">
+                    <h4><i class="fas fa-sliders-h"></i> Порог уверенности</h4>
+                    <div class="slider-container">
+                        <input type="range" id="confidenceRange" min="0.1" max="1.0" step="0.05" value="0.5">
+                        <span class="slider-value" id="confidenceValue">0.5</span>
+                    </div>
+                </div>
+
+                <div class="image-preview">
+                    <h4><i class="fas fa-image"></i> Предпросмотр</h4>
+                    <img id="previewImage" src="#" alt="Предпросмотр изображения">
+                </div>
+
+                <div style="margin-top: 25px; display: flex; gap: 15px;">
+                    <button class="btn" id="analyzeBtn"><i class="fas fa-play-circle"></i> Запустить анализ</button>
+                    <button class="btn btn-secondary" id="resetBtn"><i class="fas fa-redo"></i> Сбросить</button>
+                </div>
+            </div>
+
+            <!-- Правая панель: результаты -->
+            <div class="results-section">
+                <h2><i class="fas fa-chart-line"></i> Результаты</h2>
+                <div class="results-container">
+                    <div class="results-placeholder" id="resultsPlaceholder">
+                        <i class="fas fa-chart-bar"></i>
+                        <h3>Здесь появятся результаты</h3>
+                        <p>Загрузите изображение и нажмите "Запустить анализ"</p>
+                    </div>
+
+                    <div class="processing" id="processingIndicator">
+                        <div class="spinner"></div>
+                        <h3>Анализируем изображение...</h3>
+                        <p>Пожалуйста, подождите</p>
+                    </div>
+
+                    <div class="results-content" id="resultsContent">
+                        <!-- Результаты классификации -->
+                        <div class="classification-results" id="classificationResults">
+                            <h3 style="color: #182848; margin-bottom: 25px; font-size: 1.6rem;">
+                                <i class="fas fa-dog"></i> Результаты классификации
+                            </h3>
+                            <div id="breedResultsContainer"></div>
+                        </div>
+
+                        <!-- Результаты детекции -->
+                        <div class="detection-results" id="detectionResults">
+                            <h3 style="color: #182848; margin-bottom: 25px; font-size: 1.6rem;">
+                                <i class="fas fa-search"></i> Результаты детекции
+                            </h3>
+                            <div class="detection-canvas-container">
+                                <canvas id="detectionCanvas"></canvas>
+                            </div>
+                            <div class="detection-list" id="detectionList"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <p>Dog Breed Analyzer API | Использует обученные модели для классификации и детекции пород собак</p>
+            <div class="api-info">
+                API Endpoint: http://localhost:8075
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        // Элементы DOM
+        const fileInput = document.getElementById('fileInput');
+        const uploadArea = document.getElementById('uploadArea');
+        const selectFileBtn = document.getElementById('selectFileBtn');
+        const previewImage = document.getElementById('previewImage');
+        const modeButtons = document.querySelectorAll('.mode-btn');
+        const analyzeBtn = document.getElementById('analyzeBtn');
+        const resetBtn = document.getElementById('resetBtn');
+        const confidenceRange = document.getElementById('confidenceRange');
+        const confidenceValue = document.getElementById('confidenceValue');
+        const confidenceSlider = document.getElementById('confidenceSlider');
+        const resultsPlaceholder = document.getElementById('resultsPlaceholder');
+        const processingIndicator = document.getElementById('processingIndicator');
+        const resultsContent = document.getElementById('resultsContent');
+        const classificationResults = document.getElementById('classificationResults');
+        const detectionResults = document.getElementById('detectionResults');
+        const breedResultsContainer = document.getElementById('breedResultsContainer');
+        const detectionCanvas = document.getElementById('detectionCanvas');
+        const detectionList = document.getElementById('detectionList');
+
+        let currentMode = 'classify';
+        let currentImage = null;
+        let currentImageUrl = null;
+
+        // Обработчики событий
+        selectFileBtn.addEventListener('click', () => fileInput.click());
+        
+        uploadArea.addEventListener('click', () => fileInput.click());
+        
+        uploadArea.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            uploadArea.style.borderColor = '#182848';
+            uploadArea.style.transform = 'translateY(-5px)';
+        });
+        
+        uploadArea.addEventListener('dragleave', () => {
+            uploadArea.style.borderColor = '#4b6cb7';
+            uploadArea.style.transform = 'translateY(0)';
+        });
+        
+        uploadArea.addEventListener('drop', (e) => {
+            e.preventDefault();
+            uploadArea.style.borderColor = '#4b6cb7';
+            uploadArea.style.transform = 'translateY(0)';
+            
+            if (e.dataTransfer.files.length) {
+                fileInput.files = e.dataTransfer.files;
+                handleImageUpload(e.dataTransfer.files[0]);
+            }
+        });
+
+        fileInput.addEventListener('change', (e) => {
+            if (e.target.files.length) {
+                handleImageUpload(e.target.files[0]);
+            }
+        });
+
+        modeButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                modeButtons.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                currentMode = btn.dataset.mode;
+                
+                // Показать/скрыть слайдер уверенности
+                confidenceSlider.style.display = currentMode === 'detect' ? 'block' : 'none';
+            });
+        });
+
+        confidenceRange.addEventListener('input', () => {
+            confidenceValue.textContent = confidenceRange.value;
+        });
+
+        analyzeBtn.addEventListener('click', analyzeImage);
+        resetBtn.addEventListener('click', resetApp);
+
+        // Функции
+        function handleImageUpload(file) {
+            if (!file.type.match('image.*')) {
+                alert('Пожалуйста, выберите файл изображения');
+                return;
+            }
+
+            // Освобождаем предыдущий URL
+            if (currentImageUrl) {
+                URL.revokeObjectURL(currentImageUrl);
+            }
+            
+            currentImageUrl = URL.createObjectURL(file);
+            previewImage.src = currentImageUrl;
+            previewImage.style.display = 'block';
+            
+            // Загружаем изображение для canvas
+            currentImage = new Image();
+            currentImage.src = currentImageUrl;
+            
+            // Сбрасываем результаты
+            resetResults();
+            
+            // Фокус на кнопке анализа
+            setTimeout(() => {
+                analyzeBtn.focus();
+            }, 100);
+        }
+
+        function resetResults() {
+            resultsPlaceholder.style.display = 'flex';
+            processingIndicator.style.display = 'none';
+            resultsContent.style.display = 'none';
+            classificationResults.style.display = 'none';
+            detectionResults.style.display = 'none';
+            breedResultsContainer.innerHTML = '';
+            detectionList.innerHTML = '';
+        }
+
+        async function analyzeImage() {
+            if (!fileInput.files.length) {
+                alert('Пожалуйста, сначала выберите изображение');
+                return;
+            }
+
+            // Показываем индикатор загрузки
+            resultsPlaceholder.style.display = 'none';
+            processingIndicator.style.display = 'flex';
+            resultsContent.style.display = 'none';
+
+            const formData = new FormData();
+            formData.append('image', fileInput.files[0]);
+
+            let endpoint = '';
+            
+            if (currentMode === 'classify') {
+                endpoint = '/classify';
+            } else {
+                endpoint = `/detect?confidence=${confidenceRange.value}`;
+            }
+
+            try {
+                    const response = await fetch(`${endpoint}`, {
+                    method: 'POST',
+                    body: formData
+                });
+
+                if (!response.ok) {
+                    throw new Error(`Ошибка сервера: ${response.status}`);
+                }
+
+                const result = await response.json();
+                
+                // Отображаем результаты
+                processingIndicator.style.display = 'none';
+                resultsContent.style.display = 'block';
+                
+                if (currentMode === 'classify') {
+                    displayClassificationResults(result);
+                } else {
+                    displayDetectionResults(result);
+                }
+                
+            } catch (error) {
+                processingIndicator.style.display = 'none';
+                resultsPlaceholder.style.display = 'flex';
+                alert(`Ошибка при анализе: ${error.message}`);
+                console.error('Ошибка:', error);
+            }
+        }
+
+        function displayClassificationResults(result) {
+            detectionResults.style.display = 'none';
+            classificationResults.style.display = 'block';
+            
+            const predicted = result.predicted_breed;
+            
+            // Отображаем предсказанную породу
+            const breedResultHTML = `
+                <div class="breed-result">
+                    <div class="breed-name">
+                        <span>${predicted.name}</span>
+                        <span style="color: #4b6cb7; font-size: 1.2rem;">#${predicted.id + 1}</span>
+                    </div>
+                    <div class="confidence-bar-container">
+                        <div class="confidence-bar" style="width: ${predicted.confidence_percentage}%"></div>
+                    </div>
+                    <div class="confidence-value">${predicted.confidence_percentage}% уверенности</div>
+                </div>
+            `;
+            
+            breedResultsContainer.innerHTML = breedResultHTML;
+            
+            // Добавляем остальные породы
+            if (result.all_breeds && result.all_breeds.length > 1) {
+                const otherBreedsHTML = result.all_breeds
+                    .filter(breed => breed.id !== predicted.id)
+                    .map(breed => `
+                        <div style="background: #f8f9ff; padding: 18px; border-radius: 10px; margin-bottom: 15px; border-left: 4px solid #a0a8c0;">
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                                <span style="font-weight: 600; color: #555;">${breed.name}</span>
+                                <span style="color: #666;">${(breed.probability * 100).toFixed(2)}%</span>
+                            </div>
+                            <div style="height: 10px; background: #e0e4f0; border-radius: 5px; overflow: hidden;">
+                                <div style="height: 100%; background: #a0a8c0; border-radius: 5px; width: ${breed.probability * 100}%"></div>
+                            </div>
+                        </div>
+                    `)
+                    .join('');
+                
+                breedResultsContainer.innerHTML += `
+                    <h4 style="color: #666; margin: 25px 0 15px 0;">Другие возможные породы:</h4>
+                    ${otherBreedsHTML}
+                `;
+            }
+            
+            // Анимируем полоску уверенности
+            setTimeout(() => {
+                document.querySelector('.confidence-bar').style.width = `${predicted.confidence_percentage}%`;
+            }, 100);
+        }
+
+        function displayDetectionResults(result) {
+            classificationResults.style.display = 'none';
+            detectionResults.style.display = 'block';
+            
+            // Очищаем предыдущие результаты
+            detectionList.innerHTML = '';
+            
+            if (!result.detections || result.detections.length === 0) {
+                detectionList.innerHTML = `
+                    <div style="text-align: center; padding: 40px 20px; color: #666;">
+                        <i class="fas fa-search" style="font-size: 3rem; margin-bottom: 15px; color: #a0a8c0;"></i>
+                        <h3 style="margin-bottom: 10px;">Собаки не обнаружены</h3>
+                        <p>Попробуйте уменьшить порог уверенности</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            // Рисуем bounding boxes на canvas
+            drawDetectionBoxes(result.detections);
+            
+            // Отображаем список обнаружений
+            result.detections.forEach((detection, index) => {
+                const detectionItem = document.createElement('div');
+                detectionItem.className = 'detection-item';
+                detectionItem.innerHTML = `
+                    <div class="detection-header">
+                        <div class="detection-breed">${detection.breed_name}</div>
+                        <div class="detection-confidence">${(detection.confidence * 100).toFixed(1)}%</div>
+                    </div>
+                    <div class="detection-bbox">
+                        Координаты: [${detection.bbox.join(', ')}] | Размер: ${detection.width}×${detection.height}
+                    </div>
+                `;
+                detectionList.appendChild(detectionItem);
+            });
+        }
+
+        function drawDetectionBoxes(detections) {
+            if (!currentImage) return;
+            
+            const ctx = detectionCanvas.getContext('2d');
+            
+            // Ждем загрузки изображения
+            currentImage.onload = function() {
+                // Устанавливаем размер canvas равным размеру изображения
+                detectionCanvas.width = currentImage.width;
+                detectionCanvas.height = currentImage.height;
+                
+                // Рисуем изображение
+                ctx.drawImage(currentImage, 0, 0);
+                
+                // Рисуем bounding boxes
+                detections.forEach(detection => {
+                    const [x1, y1, x2, y2] = detection.bbox;
+                    const width = x2 - x1;
+                    const height = y2 - y1;
+                    
+                    // Рисуем прямоугольник
+                    ctx.strokeStyle = '#FF5252';
+                    ctx.lineWidth = 3;
+                    ctx.strokeRect(x1, y1, width, height);
+                    
+                    // Рисуем фон для текста
+                    const text = `${detection.breed_name} (${(detection.confidence * 100).toFixed(1)}%)`;
+                    ctx.font = '16px Arial';
+                    const textWidth = ctx.measureText(text).width;
+                    
+                    ctx.fillStyle = 'rgba(255, 82, 82, 0.8)';
+                    ctx.fillRect(x1, y1 - 25, textWidth + 20, 25);
+                    
+                    // Рисуем текст
+                    ctx.fillStyle = 'white';
+                    ctx.fillText(text, x1 + 10, y1 - 7);
+                });
+            };
+            
+            // Если изображение уже загружено, запускаем отрисовку сразу
+            if (currentImage.complete) {
+                currentImage.onload();
+            }
+        }
+
+        function resetApp() {
+            // Сбрасываем файловый input
+            fileInput.value = '';
+            
+            // Сбрасываем превью
+            previewImage.style.display = 'none';
+            previewImage.src = '#';
+            
+            // Освобождаем URL
+            if (currentImageUrl) {
+                URL.revokeObjectURL(currentImageUrl);
+                currentImageUrl = null;
+            }
+            
+            // Сбрасываем режим
+            modeButtons[0].click();
+            
+            // Сбрасываем слайдер
+            confidenceRange.value = 0.5;
+            confidenceValue.textContent = '0.5';
+            
+            // Сбрасываем результаты
+            resetResults();
+        }
+
+        // Инициализация
+        confidenceSlider.style.display = 'none';
+    </script>
+</body>
+</html>

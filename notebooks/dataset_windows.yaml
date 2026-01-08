@@ -1,0 +1,6 @@
+path: C:/Users/Dexp pc/Downloads/dog-breed-detection-main/dog-breed-detection-main/data_detection
+train: train/images
+val: valid/images
+test: test/images
+nc: 4
+names: ['Chihuahua', 'Japanese_spaniel', 'Maltese_dog', 'Pekinese']
