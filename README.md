@@ -61,7 +61,7 @@ dog_breed_project/
 
 ### 1. Клонирование репозитория
 ```bash
-git clone <URL_репозитория>
+git clone https://github.com/fjkefise/dog-breed-detection
 cd dog_breed_project
 ```
 
