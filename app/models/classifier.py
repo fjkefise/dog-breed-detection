@@ -6,10 +6,7 @@ import os
 class DogBreedClassifier:
     def __init__(self, model_path: str = None):
         # Автоматическое определение пути к модели
-        if model_path is None:
-            current_dir = os.path.dirname(os.path.abspath(__file__))
-            project_root = os.path.dirname(os.path.dirname(current_dir))
-            model_path = os.path.join(project_root, "models", "classification", "model_dynamic_quant.onnx")
+        model_path = os.path("../../models/classification/model_dynamic_quant.onnx")
 
         self.session = ort.InferenceSession(
             model_path, 

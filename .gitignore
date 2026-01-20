@@ -1,36 +1,18 @@
-# Системные файлы
-.DS_Store
-Thumbs.db
-desktop.ini
+# Виртуальное окружение
+.venv/
+venv/
 
-# IDE
-.vscode/
-.idea/
-*.swp
-*.swo
-*~
+# Данные (не комитим в Git)
+data_detection/
+data_classification/
 
-# Временные файлы
-*.tmp
-*.temp
-*.log
-
-# Python кэш
+# Кэш Python
 __pycache__/
 *.py[cod]
-*$py.class
-*.so
-.Python
-
-# Виртуальные окружения
-venv/
-env/
-.venv/
-ENV/
 
 # Jupyter
 .ipynb_checkpoints/
 
-# Логи
-logs/
-*.log
+# Модели (опционально, если они большие)
+notebooks/*.pt
+notebooks/runs/

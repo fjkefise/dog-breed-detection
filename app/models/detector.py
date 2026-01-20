@@ -5,11 +5,7 @@ import os
 
 class DogBreedDetector:
     def __init__(self, model_path: str = None):
-        if model_path is None:
-            current_dir = os.path.dirname(os.path.abspath(__file__))
-            project_root = os.path.dirname(os.path.dirname(current_dir))
-            model_path = os.path.join(project_root, "models", "detection", "yolo11n_30_epochs_quantized.onnx")
-        
+        model_path = os.path("../../models/classification/model_dynamic_quant.onnx")
         providers = ['CPUExecutionProvider']
         try:
             # Пробуем добавить GPU если доступно

@@ -37,10 +37,7 @@ app.add_middleware(
 
 @app.get("/", response_class=HTMLResponse)
 async def serve_index():
-    index_path = os.path.join(
-        os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 
-        "index.html"
-    )
+    index_path = os.path("static/index.html")
         
     with open(index_path, "r", encoding="utf-8") as f:
         html_content = f.read()

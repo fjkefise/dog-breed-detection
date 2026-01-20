@@ -19,9 +19,9 @@ COPY requirements.txt .
 RUN pip install --no-cache-dir --upgrade pip && \
     pip install --no-cache-dir -r requirements.txt
 
-COPY api/ ./api/
+COPY app/ ./app/
 COPY models/ ./models/
-COPY index.html .
+COPY app/static/index.html .
 
 EXPOSE 8077
 
